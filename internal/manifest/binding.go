@@ -14,8 +14,8 @@ func diffNewBindings(before map[string]object, after []object) []Finding {
 			continue
 		}
 		roleKey := nestedString(binding, "roleRef", "kind") + "/" + namespaceForBinding(binding) + "/" + nestedString(binding, "roleRef", "name")
-		if kind(binding) == "ClusterRoleBinding" {
-			roleKey = nestedString(binding, "roleRef", "kind") + "//" + nestedString(binding, "roleRef", "name")
+		if nestedString(binding, "roleRef", "kind") == "ClusterRole" {
+			roleKey = "ClusterRole//" + nestedString(binding, "roleRef", "name")
 		}
 		role, exists := roles[roleKey]
 		if !exists || !roleGrantsSecrets(role) {
