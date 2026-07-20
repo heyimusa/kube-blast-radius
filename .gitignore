@@ -1,0 +1,8 @@
+# Build outputs
+/dist/
+/kube-blast-radius
+
+# Editor and OS noise
+.DS_Store
+.idea/
+.vscode/
