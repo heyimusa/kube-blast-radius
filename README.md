@@ -104,6 +104,8 @@ See [container usage](docs-container.md) for a non-root, read-only invocation th
 | `WORKLOAD_ROOT_USER_ADDED` | High | A container newly runs as UID 0. |
 | `SERVICE_EXTERNAL_EXPOSURE_ADDED` | High | A Service becomes `NodePort` or `LoadBalancer`. |
 | `INGRESS_HOST_ADDED` | High | An Ingress introduces a new hostname. |
+| `TRAEFIK_INGRESS_ROUTE_HOST_ADDED` | High | A Traefik IngressRoute is newly introduced. |
+| `TRAEFIK_INGRESS_ROUTE_MATCH_ADDED` | Medium | A Traefik IngressRoute adds a rule/match. |
 | `INGRESS_DEFAULT_BACKEND_ADDED` | High | An Ingress adds a catch-all default backend. |
 | `NETWORK_POLICY_REMOVED` | High | A NetworkPolicy disappears from the manifest set. |
 | `ANALYSIS_UNSUPPORTED_KIND` | Info | A resource is present but outside enabled checks. |

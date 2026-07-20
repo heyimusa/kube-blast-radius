@@ -49,6 +49,8 @@ func Analyze(before, after []byte) ([]Finding, error) {
 			findings = append(findings, diffService(previous, next)...)
 		case "Ingress":
 			findings = append(findings, diffIngress(previous, next)...)
+		case "IngressRoute":
+			findings = append(findings, diffIngressRoute(previous, next)...)
 		default:
 			findings = append(findings, Finding{"info", "ANALYSIS_UNSUPPORTED_KIND", key, "resource kind is present but not covered by enabled security checks"})
 		}
