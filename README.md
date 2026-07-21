@@ -79,7 +79,23 @@ Renderer commands use argument vectors rather than a shell and time out after 30
 
 ## Container usage
 
-See [container usage](docs-container.md) for a non-root, read-only invocation that bundles Helm and Kubectl/Kustomize support.
+Container image, with Kustomize and Helm renderers included:
+
+```bash
+docker run --rm --read-only \
+  --tmpfs /tmp:rw,noexec,nosuid,size=32m \
+  --cap-drop ALL \
+  --security-opt no-new-privileges:true \
+  -v "$PWD:/work:ro" -w /work \
+  ghcr.io/heyimusa/kube-blast-radius:main diff \
+  --mode kustomize \
+  --before overlays/main \
+  --after overlays/pr
+```
+
+The image is published to `ghcr.io/heyimusa/kube-blast-radius` from GitHub Actions after changes land on `main` or a version tag is pushed. Pull requests build the image but never publish it.
+
+See [container usage](docs-container.md) for renderer trust-boundary notes.
 
 ## v0.1 findings
 
