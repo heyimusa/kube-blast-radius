@@ -93,7 +93,7 @@ docker run --rm --read-only \
   --after overlays/pr
 ```
 
-The image is published to `ghcr.io/heyimusa/kube-blast-radius` from GitHub Actions after changes land on `main` or a version tag is pushed. Pull requests build the image but never publish it.
+The image is published to `ghcr.io/heyimusa/kube-blast-radius` from GitHub Actions only after a push to `main` or a version tag is pushed. Relevant pull requests, and manual dispatches, build the image but never publish it.
 
 See [container usage](docs-container.md) for renderer trust-boundary notes.
 
