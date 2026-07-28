@@ -27,6 +27,13 @@ func TestDiffRawJSONIsValid(t *testing.T) {
 	}
 }
 
+func TestDiffRawSARIFIsValid(t *testing.T) {
+	output, code := runCLI(t, "diff", "--before", fixture(t, "before/manifests.yaml"), "--after", fixture(t, "after/manifests.yaml"), "--format", "sarif")
+	if code != 1 || !bytes.Contains(output, []byte(`"version": "2.1.0"`)) || !bytes.Contains(output, []byte(`"ruleId": "RBAC_SECRET_ACCESS_ADDED"`)) {
+		t.Fatalf("exit = %d, output = %s", code, output)
+	}
+}
+
 func TestExactExitCodes(t *testing.T) {
 	clean := writeTemp(t, "clean.yaml", "apiVersion: v1\nkind: ConfigMap\nmetadata: {name: clean}\n")
 	if _, code := runCLI(t, "diff", "--before", clean, "--after", clean); code != 0 {
