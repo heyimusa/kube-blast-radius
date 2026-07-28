@@ -51,6 +51,10 @@ func Analyze(before, after []byte) ([]Finding, error) {
 			findings = append(findings, diffIngress(previous, next)...)
 		case "IngressRoute":
 			findings = append(findings, diffIngressRoute(previous, next)...)
+		case "Gateway":
+			findings = append(findings, diffGateway(previous, next)...)
+		case "HTTPRoute", "GRPCRoute", "TLSRoute", "TCPRoute", "UDPRoute":
+			findings = append(findings, diffGatewayRoute(previous, next)...)
 		default:
 			findings = append(findings, Finding{"info", "ANALYSIS_UNSUPPORTED_KIND", key, "resource kind is present but not covered by enabled security checks"})
 		}

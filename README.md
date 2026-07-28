@@ -54,7 +54,7 @@ kube-blast-radius diff \
   --after charts/checkout \
   --before-values values-current.yaml \
   --after-values values-next.yaml \
-  --format json
+  --format sarif > kube-blast-radius.sarif
 ```
 
 Example output:
@@ -122,6 +122,10 @@ See [container usage](docs-container.md) for renderer trust-boundary notes.
 | `INGRESS_HOST_ADDED` | High | An Ingress introduces a new hostname. |
 | `TRAEFIK_INGRESS_ROUTE_HOST_ADDED` | High | A Traefik IngressRoute is newly introduced. |
 | `TRAEFIK_INGRESS_ROUTE_MATCH_ADDED` | Medium | A Traefik IngressRoute adds a rule/match. |
+| `GATEWAY_ROUTE_HOSTNAME_ADDED` | High | A Gateway API route adds a hostname. |
+| `GATEWAY_ROUTE_CATCH_ALL_ADDED` | High | A Gateway API route adds a rule without matches. |
+| `GATEWAY_ALLOWED_ROUTES_WIDENED` | High | A Gateway listener changes `allowedRoutes.namespaces.from` from `Same` to `All`; selector changes are intentionally not evaluated. |
+| `GATEWAY_CROSS_NAMESPACE_BACKEND_ADDED` | High | A Gateway API route adds an explicitly cross-namespace backend. |
 | `INGRESS_DEFAULT_BACKEND_ADDED` | High | An Ingress adds a catch-all default backend. |
 | `NETWORK_POLICY_REMOVED` | High | A NetworkPolicy disappears from the manifest set. |
 | `ANALYSIS_UNSUPPORTED_KIND` | Info | A resource is present but outside enabled checks. |
@@ -133,10 +137,11 @@ This is intentionally an **offline change analyzer**, not a cluster security pla
 - It does not inspect a live cluster.
 - It does not calculate complete NetworkPolicy reachability.
 - It does not evaluate cloud IAM or admission-controller policy.
+- It does not resolve Gateway API parentRefs, ReferenceGrants, controller behavior, TLS certificates, DNS, runtime routing, or `allowedRoutes` selectors.
 - It does not read Secret values.
 - It does not claim compliance or complete privilege-escalation coverage.
 
-The first goal is a reviewable change report that makes high-risk changes hard to overlook. Future versions can add effective RBAC subject reporting, container capabilities, hostPath mounts, ServiceAccount changes, Gateway API exposure, SARIF, and a GitHub Action.
+The first goal is a reviewable change report that makes high-risk changes hard to overlook. `--format sarif` emits SARIF 2.1.0 with resource identities in result properties; it intentionally does not fabricate source locations when only rendered manifests are available. Future versions can add effective RBAC subject reporting and a GitHub Action.
 
 ## Development
 

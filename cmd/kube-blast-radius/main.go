@@ -12,7 +12,7 @@ import (
 
 func main() {
 	if len(os.Args) < 2 || os.Args[1] != "diff" {
-		fmt.Fprintln(os.Stderr, "usage: kube-blast-radius diff --before PATH --after PATH [--mode raw|kustomize|helm] [--format text|json]")
+		fmt.Fprintln(os.Stderr, "usage: kube-blast-radius diff --before PATH --after PATH [--mode raw|kustomize|helm] [--format text|json|sarif]")
 		os.Exit(2)
 	}
 	fs := flag.NewFlagSet("diff", flag.ContinueOnError)
@@ -20,10 +20,10 @@ func main() {
 	before := fs.String("before", "", "before manifest/path")
 	after := fs.String("after", "", "after manifest/path")
 	mode := fs.String("mode", "raw", "raw, kustomize, or helm")
-	format := fs.String("format", "text", "text or json")
+	format := fs.String("format", "text", "text, json, or sarif")
 	beforeValues := fs.String("before-values", "", "Helm values file for before render")
 	afterValues := fs.String("after-values", "", "Helm values file for after render")
-	if err := fs.Parse(os.Args[2:]); err != nil || *before == "" || *after == "" || (*format != "text" && *format != "json") {
+	if err := fs.Parse(os.Args[2:]); err != nil || *before == "" || *after == "" || (*format != "text" && *format != "json" && *format != "sarif") {
 		fs.Usage()
 		os.Exit(2)
 	}
@@ -41,6 +41,12 @@ func main() {
 	}
 	if *format == "json" {
 		out, err := report.JSON(findings)
+		if err != nil {
+			fail(err)
+		}
+		fmt.Println(string(out))
+	} else if *format == "sarif" {
+		out, err := report.SARIF(findings)
 		if err != nil {
 			fail(err)
 		}
