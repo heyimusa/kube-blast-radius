@@ -1,0 +1,40 @@
+{
+  "findings": [
+    {
+      "severity": "high",
+      "code": "WORKLOAD_IMAGE_DIGEST_REMOVED",
+      "resource": "Deployment/storefront/checkout",
+      "message": "container api image reference no longer includes a digest"
+    },
+    {
+      "severity": "high",
+      "code": "WORKLOAD_IMAGE_LATEST_ADDED",
+      "resource": "Deployment/storefront/checkout",
+      "message": "container api image reference now uses the latest tag"
+    },
+    {
+      "severity": "high",
+      "code": "WORKLOAD_IMAGE_LATEST_ADDED",
+      "resource": "Deployment/storefront/checkout",
+      "message": "container inspect image reference now uses the latest tag"
+    },
+    {
+      "severity": "medium",
+      "code": "WORKLOAD_IMAGE_REFERENCE_CHANGED",
+      "resource": "Deployment/storefront/checkout",
+      "message": "container api image reference changes from registry.example/checkout:v2@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa to registry.example/checkout:latest"
+    },
+    {
+      "severity": "medium",
+      "code": "WORKLOAD_IMAGE_REFERENCE_CHANGED",
+      "resource": "Deployment/storefront/checkout",
+      "message": "container schema image reference changes from registry.example/schema:v1 to registry.example/schema:v2"
+    },
+    {
+      "severity": "medium",
+      "code": "WORKLOAD_IMAGE_REFERENCE_CHANGED",
+      "resource": "Deployment/storefront/checkout",
+      "message": "container inspect image reference changes from registry.example/inspect:v1 to registry.example/inspect:latest@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    }
+  ]
+}

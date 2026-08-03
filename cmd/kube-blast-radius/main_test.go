@@ -8,6 +8,13 @@ import (
 	"testing"
 )
 
+func TestVersionPrintsBuildVersion(t *testing.T) {
+	output, code := runCLI(t, "--version")
+	if code != 0 || string(output) != "dev\n" {
+		t.Fatalf("exit = %d, output = %q", code, output)
+	}
+}
+
 func TestDiffRawReportsHighImpact(t *testing.T) {
 	output, code := runCLI(t, "diff", "--before", fixture(t, "before/manifests.yaml"), "--after", fixture(t, "after/manifests.yaml"))
 	if code != 1 {

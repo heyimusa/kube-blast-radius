@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkout
+  namespace: storefront
+spec:
+  template:
+    spec:
+      containers:
+        - name: api
+          image: registry.example/checkout:latest
+        - name: unchanged
+          image: registry.example/unchanged:v1
+      initContainers:
+        - name: schema
+          image: registry.example/schema:v2
+      ephemeralContainers:
+        - name: inspect
+          image: registry.example/inspect:latest@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb

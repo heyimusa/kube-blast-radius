@@ -10,7 +10,13 @@ import (
 	"github.com/heyimusa/kube-blast-radius/internal/report"
 )
 
+var version = "dev"
+
 func main() {
+	if len(os.Args) == 2 && os.Args[1] == "--version" {
+		fmt.Println(version)
+		return
+	}
 	if len(os.Args) < 2 || os.Args[1] != "diff" {
 		fmt.Fprintln(os.Stderr, "usage: kube-blast-radius diff --before PATH --after PATH [--mode raw|kustomize|helm] [--format text|json|sarif]")
 		os.Exit(2)
