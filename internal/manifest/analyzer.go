@@ -324,9 +324,19 @@ func diffWorkload(old, next object) []Finding {
 	if oldSA != newSA {
 		out = append(out, Finding{"high", "WORKLOAD_SERVICE_ACCOUNT_CHANGED", resource, fmt.Sprintf("service account changes from %s to %s", oldSA, newSA)})
 	}
-	for _, name := range containerNames(next) {
-		oldContainer := containerByName(old, name)
-		newContainer := containerByName(next, name)
+	for _, containerKey := range containerKeys(next) {
+		oldContainer := containerByKey(old, containerKey)
+		newContainer := containerByKey(next, containerKey)
+		name := containerName(containerKey)
+		if oldImage, newImage := imageReference(oldContainer), imageReference(newContainer); oldImage != "" && newImage != "" && oldImage != newImage {
+			out = append(out, Finding{"medium", "WORKLOAD_IMAGE_REFERENCE_CHANGED", resource, fmt.Sprintf("container %s image reference changes from %s to %s", name, oldImage, newImage)})
+			if hasDigestReference(oldImage) && !hasDigestReference(newImage) {
+				out = append(out, Finding{"high", "WORKLOAD_IMAGE_DIGEST_REMOVED", resource, fmt.Sprintf("container %s image reference no longer includes a digest", name)})
+			}
+			if !hasLatestTag(oldImage) && hasLatestTag(newImage) {
+				out = append(out, Finding{"high", "WORKLOAD_IMAGE_LATEST_ADDED", resource, fmt.Sprintf("container %s image reference now uses the latest tag", name)})
+			}
+		}
 		if boolAtMap(oldContainer, "securityContext", "runAsNonRoot") && !boolAtMap(newContainer, "securityContext", "runAsNonRoot") {
 			out = append(out, Finding{"high", "WORKLOAD_RUN_AS_NON_ROOT_REMOVED", resource, fmt.Sprintf("container %s no longer requires non-root execution", name)})
 		}

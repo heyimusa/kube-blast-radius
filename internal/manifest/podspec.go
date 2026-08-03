@@ -18,16 +18,21 @@ func podBool(workload object, field string) bool {
 	return value
 }
 
+func podContainerField(workload object, field string) []map[string]any {
+	items, _ := podSpec(workload)[field].([]any)
+	var out []map[string]any
+	for _, raw := range items {
+		if c, ok := asMap(raw); ok {
+			out = append(out, c)
+		}
+	}
+	return out
+}
+
 func podContainers(workload object) []map[string]any {
-	spec := podSpec(workload)
 	var out []map[string]any
 	for _, field := range []string{"containers", "initContainers", "ephemeralContainers"} {
-		items, _ := spec[field].([]any)
-		for _, raw := range items {
-			if c, ok := asMap(raw); ok {
-				out = append(out, c)
-			}
-		}
+		out = append(out, podContainerField(workload, field)...)
 	}
 	return out
 }

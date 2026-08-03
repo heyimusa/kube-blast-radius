@@ -113,6 +113,9 @@ See [container usage](docs-container.md) for renderer trust-boundary notes.
 | `WORKLOAD_HOST_IPC_ADDED` | High | A workload newly enables `hostIPC`. |
 | `WORKLOAD_HOST_PATH_ADDED` | High | A workload newly adds a hostPath volume. |
 | `WORKLOAD_SERVICE_ACCOUNT_CHANGED` | High | A workload changes its effective ServiceAccount. |
+| `WORKLOAD_IMAGE_REFERENCE_CHANGED` | Medium | A matched container changes its literal image reference. |
+| `WORKLOAD_IMAGE_DIGEST_REMOVED` | High | A matched container changes from an `@sha256:` image reference to one without it. |
+| `WORKLOAD_IMAGE_LATEST_ADDED` | High | A matched container changes to an explicit `:latest` image reference. |
 | `WORKLOAD_RUN_AS_NON_ROOT_REMOVED` | High | A container no longer requires non-root execution. |
 | `WORKLOAD_READ_ONLY_ROOT_FILESYSTEM_REMOVED` | High | A container loses a read-only root filesystem. |
 | `WORKLOAD_CAPABILITY_ADDED` | High | A container adds Linux capabilities. |
@@ -139,6 +142,7 @@ This is intentionally an **offline change analyzer**, not a cluster security pla
 - It does not evaluate cloud IAM or admission-controller policy.
 - It does not resolve Gateway API parentRefs, ReferenceGrants, controller behavior, TLS certificates, DNS, runtime routing, or `allowedRoutes` selectors.
 - It does not read Secret values.
+- It does not resolve image references, contact registries, or verify an image's signature, provenance, SBOM, vulnerability status, or safety. Image findings describe literal manifest-reference transitions only.
 - It does not claim compliance or complete privilege-escalation coverage.
 
 The first goal is a reviewable change report that makes high-risk changes hard to overlook. `--format sarif` emits SARIF 2.1.0 with resource identities in result properties; it intentionally does not fabricate source locations when only rendered manifests are available. Future versions can add effective RBAC subject reporting and a GitHub Action.
