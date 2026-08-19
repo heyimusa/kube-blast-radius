@@ -1,5 +1,10 @@
 # kube-blast-radius
 
+[![test](https://github.com/heyimusa/kube-blast-radius/actions/workflows/test.yml/badge.svg)](https://github.com/heyimusa/kube-blast-radius/actions/workflows/test.yml)
+[![container](https://github.com/heyimusa/kube-blast-radius/actions/workflows/container.yml/badge.svg)](https://github.com/heyimusa/kube-blast-radius/actions/workflows/container.yml)
+[![release](https://img.shields.io/github/v/release/heyimusa/kube-blast-radius)](https://github.com/heyimusa/kube-blast-radius/releases)
+[![license](https://img.shields.io/github/license/heyimusa/kube-blast-radius)](LICENSE)
+
 `kube-blast-radius` explains the security impact of a Kubernetes manifest change.
 
 It compares **before** and **after** rendered manifests, then reports new security-relevant capability, exposure, and workload-hardening changes. It is designed for GitOps pull-request review, where a short YAML diff can hide a meaningful change in effective access or network surface.
@@ -66,6 +71,22 @@ HIGH  Deployment/payments/checkout: workload newly adds a privileged container (
 ```
 
 The CLI exits `1` when it emits a `HIGH` finding, `0` when no high-severity change is found, and `2` for input, parse, or renderer errors.
+
+## Install and verify a release
+
+Download the archive, `checksums.txt`, and `sbom.cdx.json` from the same
+[GitHub release](https://github.com/heyimusa/kube-blast-radius/releases). Verify
+both downloaded assets before extracting the binary:
+
+```sh
+sha256sum -c checksums.txt
+tar -xzf kube-blast-radius_vX.Y.Z_linux_amd64.tar.gz
+./kube-blast-radius-linux-amd64 --version
+```
+
+A matching checksum establishes byte equality with the release checksum. It
+does not establish that an artifact is safe, trusted, or suitable for a
+particular environment.
 
 ## Supported render modes
 

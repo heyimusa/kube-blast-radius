@@ -1,0 +1,30 @@
+name: False assurance or unclear security claim
+description: Report wording or behavior that could overstate what offline static analysis proves
+title: "assurance: "
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include credentials, customer manifests, internal hostnames, kubeconfig content, or Secret values. This form is for claims or behavior that could mislead reviewers about the analyzer's guarantees.
+  - type: textarea
+    id: concern
+    attributes:
+      label: Potentially misleading claim or behavior
+      description: Quote the exact CLI output or documentation and explain the assurance it could create.
+    validations:
+      required: true
+  - type: textarea
+    id: scenario
+    attributes:
+      label: Sanitized scenario
+      description: Describe a synthetic example showing why the interpretation would be unsafe.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: kube-blast-radius version
+      placeholder: v0.3.0
+    validations:
+      required: true

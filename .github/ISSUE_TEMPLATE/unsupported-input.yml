@@ -1,0 +1,42 @@
+name: Unsupported input or renderer
+description: Request support for a manifest kind, render mode, or input shape
+title: "input: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include credentials, customer manifests, internal hostnames, kubeconfig content, or Secret values. Use a minimal synthetic example.
+  - type: dropdown
+    id: input-type
+    attributes:
+      label: Input type
+      options:
+        - Raw rendered YAML
+        - Kustomize directory
+        - Helm chart
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Review use case
+      description: Explain the change-risk question this input should help reviewers answer.
+    validations:
+      required: true
+  - type: textarea
+    id: sample
+    attributes:
+      label: Minimal sanitized sample
+      description: Provide a minimal input or directory layout using placeholders only.
+      render: yaml
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: kube-blast-radius version
+      placeholder: v0.3.0
+    validations:
+      required: true

@@ -1,0 +1,38 @@
+name: Incorrect or missing finding
+description: Report a false positive, missed finding, or misleading result from sanitized manifests
+title: "finding: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include credentials, customer manifests, internal hostnames, kubeconfig content, or Secret values. Use synthetic YAML that reproduces the behavior.
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: State the finding or absence of a finding you expected, and why.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include the exact sanitized command, exit status, and output.
+    validations:
+      required: true
+  - type: textarea
+    id: manifests
+    attributes:
+      label: Minimal sanitized before/after manifests
+      description: Paste a minimal reproducible pair using placeholders only.
+      render: yaml
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: kube-blast-radius version
+      placeholder: v0.3.0
+    validations:
+      required: true
